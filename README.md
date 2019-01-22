@@ -8,3 +8,4 @@
 * [Naïve Bees/ Image Loading and Processing](https://www.datacamp.com/projects/374)
 * [Naïve Bees/ Predict Species from Images](https://www.datacamp.com/projects/412)
 * [Naïve Bees/ Deep Learning with Images](https://www.datacamp.com/projects/555)
+### [Classify Song Genres from Audio Data](https://www.datacamp.com/projects/449)
