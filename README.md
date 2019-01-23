@@ -9,3 +9,5 @@
 * [Naïve Bees/ Predict Species from Images](https://www.datacamp.com/projects/412)
 * [Naïve Bees/ Deep Learning with Images](https://www.datacamp.com/projects/555)
 ### [Classify Song Genres from Audio Data](https://www.datacamp.com/projects/449)
+### [The Hottest Topics in Machine Learning](https://www.datacamp.com/projects/158)
+### [Reducing Traffic Mortality in the USA](https://www.datacamp.com/projects/462)
