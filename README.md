@@ -1,5 +1,8 @@
 # DataCamp Projects
+This repo includes all the projects I've completed on DataCamp.
+The code and results for each project could be found in the corresponding folder.
 
+## Orginal Project Links:
 ### [A Network analysis of Game of Thrones](https://www.datacamp.com/projects/76)
 ### [Dr. Semmelweis and the Discovery of Handwashing](https://www.datacamp.com/projects/20)
 ### [Exploring 67 years of LEGO](https://www.datacamp.com/projects/10)
