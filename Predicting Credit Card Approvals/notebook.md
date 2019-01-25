@@ -1,6 +1,7 @@
 
 ## 1. Credit card applications
 <p>Commercial banks receive <em>a lot</em> of applications for credit cards. Many of them get rejected for many reasons, like high loan balances, low income levels, or too many inquiries on an individual's credit report, for example. Manually analyzing these applications is mundane, error-prone, and time-consuming (and time is money!). Luckily, this task can be automated with the power of machine learning and pretty much every commercial bank does so nowadays. In this notebook, we will build an automatic credit card approval predictor using machine learning techniques, just like the real banks do!</p>
+<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_558/img/credit_card.jpg" alt="Credit card being held in hand"></p>
 <p>We'll use the <a href="http://archive.ics.uci.edu/ml/datasets/credit+approval">Credit Card Approval dataset</a> from the UCI Machine Learning Repository. The structure of this notebook is as follows:</p>
 <ul>
 <li>First, we will start off by loading and viewing the dataset.</li>
@@ -184,6 +185,13 @@ for c in cols :
     Name: 14, dtype: int64
     
 
+    C:\Users\cuican2\anaconda3\lib\site-packages\pandas\core\generic.py:3660: SettingWithCopyWarning: 
+    A value is trying to be set on a copy of a slice from a DataFrame
+    
+    See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+      self._update_inplace(new_data)
+    
+
 ## 5. Handling the missing values (part iii)
 <p>We have successfully taken care of the missing values present in the numeric columns. There are still some missing values to be imputed for columns 0, 1, 3, 4, 5, 6 and 13. All of these columns contain non-numeric data and this why the mean imputation strategy would not work here. This needs a different treatment. </p>
 <p>We are going to impute these missing values with the most frequent values as present in the respective columns. This is <a href="https://www.datacamp.com/community/tutorials/categorical-data">good practice</a> when it comes to imputing missing values for categorical data in general.</p>
@@ -203,25 +211,19 @@ for col in cc_apps.columns:
  
 ```
 
-    False    678
-    True      12
+    False    690
     Name: 0, dtype: int64
-    False    678
-    True      12
+    False    690
     Name: 1, dtype: int64
     False    690
     Name: 2, dtype: int64
-    False    684
-    True       6
+    False    690
     Name: 3, dtype: int64
-    False    684
-    True       6
+    False    690
     Name: 4, dtype: int64
-    False    681
-    True       9
+    False    690
     Name: 5, dtype: int64
-    False    681
-    True       9
+    False    690
     Name: 6, dtype: int64
     False    690
     Name: 7, dtype: int64
@@ -235,8 +237,7 @@ for col in cc_apps.columns:
     Name: 11, dtype: int64
     False    690
     Name: 12, dtype: int64
-    False    677
-    True      13
+    False    690
     Name: 13, dtype: int64
     False    690
     Name: 14, dtype: int64
@@ -266,9 +267,9 @@ for col in cc_apps.columns:
     # Compare if the dtype is object
     if cc_apps[col].dtypes== "object":
     # Use LabelEncoder to do the numeric transformation
-        le = LabelEncoder()
-        le.fit(cc_apps[col])
-        cc_apps[col] = le.transform(cc_apps[col])
+        le_col = LabelEncoder()
+        le_col.fit(cc_apps[col])
+        cc_apps[col] = le_col.transform(cc_apps[col])
 ```
 
 ## 7. Preprocessing the data (part ii)
@@ -326,6 +327,16 @@ logreg = LogisticRegression()
 logreg.fit(X_train, y_train)
 ```
 
+
+
+
+    LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+              intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+              penalty='l2', random_state=None, solver='liblinear', tol=0.0001,
+              verbose=0, warm_start=False)
+
+
+
 ## 10. Making predictions and evaluating performance
 <p>But how well does our model perform? </p>
 <p>We will now evaluate our model on the test set with respect to <a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy">classification accuracy</a>. But we will also take a look the model's <a href="http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/">confusion matrix</a>. In the case of predicting credit card applications, it is equally important to see if our machine learning model is able to predict the approval status of the applications as denied that originally got denied. If our model is not performing well in this aspect, then it might end up approving the application that should have been approved. The confusion matrix helps us to view our model's performance from these aspects.  </p>
@@ -344,6 +355,11 @@ print("Accuracy of logistic regression classifier: ", logreg.score(X_test, y_tes
 # Print the confusion matrix of the logreg model
 print(confusion_matrix(y_test, y_pred))
 ```
+
+    Accuracy of logistic regression classifier:  0.833333333333
+    [[92 11]
+     [27 98]]
+    
 
 ## 11. Grid searching and making the model perform better
 <p>Our model was pretty good! It was able to yield an accuracy score of almost 84%.</p>
@@ -385,4 +401,12 @@ grid_model_result = grid_model.fit(rescaledX, y)
 # Summarize results
 best_score, best_params = grid_model_result.best_score_, grid_model_result.best_params_
 print("Best: %f using %s" % (best_score, best_params))
+```
+
+    Best: 0.853623 using {'max_iter': 100, 'tol': 0.01}
+    
+
+
+```python
+
 ```
