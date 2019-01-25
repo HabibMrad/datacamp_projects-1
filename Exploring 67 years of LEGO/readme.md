@@ -2,16 +2,9 @@
 ## 1. Introduction
 <p>Everyone loves Lego (unless you ever stepped on one). Did you know by the way that "Lego" was derived from the Danish phrase leg godt, which means "play well"? Unless you speak Danish, probably not. </p>
 <p>In this project, we will analyze a fascinating dataset on every single lego block that has ever been built!</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_10/datasets/lego-bricks.jpeg" alt="lego"></p>
-
-
-```python
-# Nothing to do here
-```
 
 ## 2. Reading Data
 <p>A comprehensive database of lego blocks is provided by <a href="https://rebrickable.com/downloads/">Rebrickable</a>. The data is available as csv files and the schema is shown below.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_10/datasets/downloads_schema.png" alt="schema"></p>
 <p>Let us start by reading in the colors data to get a sense of the diversity of lego sets!</p>
 
 
@@ -88,7 +81,6 @@ colors.head()
 
 ```python
 # How many distinct colors are available?
-# -- YOUR CODE FOR TASK 3 --
 num_colors = colors['name'].nunique()
 print(num_colors)
 ```
@@ -102,7 +94,6 @@ print(num_colors)
 
 ```python
 # colors_summary: Distribution of colors based on transparency
-# -- YOUR CODE FOR TASK 4 --
 colors['is_trans'] = colors['is_trans'].astype('category')
 colors_summary = colors.pivot_table(index='is_trans', aggfunc='count')
 print(colors_summary)
@@ -150,10 +141,8 @@ plt.plot(parts_by_year)
 
 ```python
 # themes_by_year: Number of themes shipped by year
-# -- YOUR CODE HERE --
 themes_by_year = sets[['year', 'theme_id']].groupby(by = 'year', as_index = False).\
     agg({'theme_id': 'count'})
-#themes_by_year = themes_by_year
 print(themes_by_year)
 ```
 
@@ -225,8 +214,3 @@ print(themes_by_year)
 
 ## 7. Wrapping It All Up!
 <p>Lego blocks offer an unlimited amount of fun across ages. We explored some interesting trends around colors, parts, and themes. </p>
-
-
-```python
-# Nothing to do here
-```
