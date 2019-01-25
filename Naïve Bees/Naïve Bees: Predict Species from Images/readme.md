@@ -1,11 +1,8 @@
 
 ## 1. Import Python libraries
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_412/img/92_notebook.jpg" alt="honey bee">
-<em>A honey bee (Apis).</em></p>
+
 <p>Can a machine identify a bee as a honey bee or a bumble bee? These bees have different <a href="https://www.thesca.org/connect/blog/bumblebees-vs-honeybees-what%E2%80%99s-difference-and-why-does-it-matter">behaviors and appearances</a>, but given the variety of backgrounds, positions, and image resolutions, it can be a challenge for machines to tell them apart.</p>
 <p>Being able to identify bee species from images is a task that ultimately would allow researchers to more quickly and effectively collect field data. Pollinating bees have critical roles in both ecology and agriculture, and diseases like <a href="http://news.harvard.edu/gazette/story/2015/07/pesticide-found-in-70-percent-of-massachusetts-honey-samples/">colony collapse disorder</a> threaten these species. Identifying different species of bees in the wild means that we can better understand the prevalence and growth of these important insects.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_412/img/20_notebook.jpg" alt="bumble bee">
-<em>A bumble bee (Bombus).</em></p>
 <p>After loading and pre-processing images, this notebook walks through building a model that can automatically detect honey bees and bumble bees.</p>
 
 
@@ -171,7 +168,6 @@ print('Greyscale bombus image has shape: ', grey_bombus.shape)
 ## 4. Histogram of oriented gradients
 <p>Now we need to turn these images into something that a machine learning algorithm can understand. Traditional computer vision techniques have relied on mathematical transforms to turn images into useful features. For example, you may want to detect edges of objects in an image, increase the contrast, or filter out particular colors.</p>
 <p>We've got a matrix of pixel values, but those don't contain enough interesting information on their own for most algorithms. We need to help the algorithms along by picking out some of the salient features for them using the <a href="http://scikit-image.org/docs/dev/auto_examples/features_detection/plot_hog.html">histogram of oriented gradients</a> (HOG) descriptor. The idea behind <a href="https://en.wikipedia.org/wiki/Histogram_of_oriented_gradients">HOG</a> is that an object's shape within an image can be inferred by its edges, and a way to identify edges is by looking at the direction of intensity gradients (i.e. changes in luminescence). </p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_412/img/hog.png" alt="HOG"></p>
 <p>An image is divided in a grid fashion into cells, and for the pixels within each cell, a histogram of gradient directions is compiled. To improve invariance to highlights and shadows in an image, cells are block normalized, meaning an intensity value is calculated for a larger region of an image called a block and used to contrast normalize all cell-level histograms within each block. The HOG feature vector for the image is the concatenation of these cell-level histograms.</p>
 
 
@@ -257,7 +253,6 @@ feature_matrix = create_feature_matrix(labels)
 <p>Our features aren't quite done yet. Many machine learning methods are built to work best with data that has a mean of 0 and unit variance. Luckily, scikit-learn <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html">provides a simple way</a> to rescale your data to work well using <code>StandardScaler</code>. They've got a more thorough explanation of why that is in the linked docs.</p>
 <p>Remember also that we have over 31,000 features for each image and only 500 images total. To use an SVM, our model of choice, we also need to reduce the number of features we have using <a href="http://scikit-learn.org/stable/modules/decomposition.html#pca">principal component analysis</a> (PCA). </p>
 <p>PCA is a way of linearly transforming the data such that most of the information in the data is contained within a smaller number of features called components. Below is a visual <a href="https://towardsdatascience.com/pca-using-python-scikit-learn-e653f8989e60">example</a> from an image dataset containing handwritten numbers. The image on the left is the original image with 784 components. We can see that the image on the right (post PCA) captures the shape of the number quite effectively even with only 59 components.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_412/img/pca_cropped.png" alt="PCA"></p>
 <p>In our case, we will keep 500 components. This means our feature matrix will only have 500 columns rather than the original 31,296.</p>
 
 
@@ -307,7 +302,6 @@ pd.Series(y_train).value_counts()
 ## 9. Train model
 <p>It's finally time to build our model! We'll use a <a href="http://scikit-learn.org/stable/modules/svm.html">support vector machine</a> (SVM), a type of supervised machine learning model used for regression, classification, and outlier detection." An <a href="https://en.wikipedia.org/wiki/Support_vector_machine">SVM model</a> is a representation of the examples as points in space, mapped so that the examples of the separate categories are divided by a clear gap that is as wide as possible. New examples are then mapped into that same space and predicted to belong to a category based on which side of the gap they fall."</p>
 <p>Here's a visualization of the maximum margin separating two classes using an SVM classifier with a linear kernel.
-<img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_412/img/svm_cropped.png" alt="SVM"></p>
 <p>Since we have a classification task -- honey or bumble bee -- we will use the support vector classifier (SVC), a type of SVM. We imported this class at the top of the notebook.</p>
 
 
