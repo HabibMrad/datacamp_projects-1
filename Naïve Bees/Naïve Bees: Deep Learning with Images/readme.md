@@ -1,11 +1,7 @@
 
 ## 1. Import Python libraries
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_555/img/92_notebook.jpg" alt="honey bee">
-<em>A honey bee (Apis).</em></p>
 <p>Can a machine identify a bee as a honey bee or a bumble bee? These bees have different <a href="https://www.thesca.org/connect/blog/bumblebees-vs-honeybees-what%E2%80%99s-difference-and-why-does-it-matter">behaviors and appearances</a>, but given the variety of backgrounds, positions, and image resolutions, it can be a challenge for machines to tell them apart.</p>
 <p>Being able to identify bee species from images is a task that ultimately would allow researchers to more quickly and effectively collect field data. Pollinating bees have critical roles in both ecology and agriculture, and diseases like <a href="http://news.harvard.edu/gazette/story/2015/07/pesticide-found-in-70-percent-of-massachusetts-honey-samples/">colony collapse disorder</a> threaten these species. Identifying different species of bees in the wild means that we can better understand the prevalence and growth of these important insects.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_555/img/20_notebook.jpg" alt="bumble bee">
-<em>A bumble bee (Bombus).</em></p>
 <p>This notebook walks through building a simple deep learning model that can automatically detect honey bees and bumble bees and then loads a pre-trained model for evaluation.</p>
 
 
@@ -61,7 +57,6 @@ y = labels.genus.values
 ## 3. Examine RGB values in an image matrix
 <p>Image data can be represented as a matrix. The width of the matrix is the width of the image, the height of the matrix is the height of the image, and the depth of the matrix is the number of channels. Most image formats have three color channels: red, green, and blue.</p>
 <p>For each pixel in an image, there is a value for every channel. The combination of the three values corresponds to the color, as per the <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB color model</a>. Values for each color can range from 0 to 255, so a purely blue pixel would show up as (0, 0, 255).</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_555/img/rgb_example.png" width="600"></p>
 <p>Let's explore the data for a sample image. </p>
 
 
@@ -182,7 +177,6 @@ model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
 <li><code>Dense</code>. Final layer which calculates the probability the image is either a bumble bee or honey bee.</li>
 </ul>
 <p>To take a look at how it all stacks up, we'll print the model summary. Notice that our model has a whopping <code>3,669,249</code> paramaters. These are the different weights that the model learns through training and what are used to generate predictions on a new image.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_555/img/mlp_conv.png" alt=""></p>
 
 
 ```python
@@ -288,7 +282,6 @@ model.fit(
 ## 9. Load pre-trained model and score
 <p>Now we'll load a pre-trained model that has the architecture we specified above and was trained for 200 epochs on the full train and test sets we created above.</p>
 <p>Let's use the <a href="https://keras.io/models/model/#evaluate"><code>evaluate</code></a> method to see how well the model did at classifying bumble bees and honey bees for the test and validation sets.  Recall that accuracy is the number of correct predictions divided by the total number of predictions. Given that our classes are balanced, a model that predicts <code>1.0</code> for every image would get an accuracy around <code>0.5</code>.</p>
-<p>Note: it may take a few seconds to load the model. Recall that our model has over 3 million parameters (weights), which are what's being loaded.</p>
 
 
 ```python
