@@ -38,6 +38,5 @@ plt.plot(parts_by_year)
 
 # themes_by_year: Number of themes shipped by year
 themes_by_year = sets[['year', 'theme_id']].groupby(by = 'year', as_index = False).
-#themes_by_year = themes_by_year
 print(themes_by_year)
 
