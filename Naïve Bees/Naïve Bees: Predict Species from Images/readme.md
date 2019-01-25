@@ -75,7 +75,6 @@ plt.imshow(get_image(bombus_row))
 plt.show()
 ```
 
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
