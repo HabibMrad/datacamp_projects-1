@@ -1,6 +1,7 @@
 
 ## 1. Credit card applications
 <p>Commercial banks receive <em>a lot</em> of applications for credit cards. Many of them get rejected for many reasons, like high loan balances, low income levels, or too many inquiries on an individual's credit report, for example. Manually analyzing these applications is mundane, error-prone, and time-consuming (and time is money!). Luckily, this task can be automated with the power of machine learning and pretty much every commercial bank does so nowadays. In this notebook, we will build an automatic credit card approval predictor using machine learning techniques, just like the real banks do!</p>
+<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_558/img/credit_card.jpg" alt="Credit card being held in hand"></p>
 <p>We'll use the <a href="http://archive.ics.uci.edu/ml/datasets/credit+approval">Credit Card Approval dataset</a> from the UCI Machine Learning Repository. The structure of this notebook is as follows:</p>
 <ul>
 <li>First, we will start off by loading and viewing the dataset.</li>
@@ -18,18 +19,32 @@ import pandas as pd
 
 #!head -10 'datasets/cc_approvals.data'
 # Load dataset
-cc_apps = pd.read_csv('datasets/cc_approvals.data', sep = ',', header = None)
+cc_apps = pd.read_csv('datasets/cc_approvals.data', sep = ',', header = None, names = ['Gender', 'Age', 'Debt', 'Married', 'BankCustomer', 'EducationLevel', 'Ethnicity', 'YearsEmployed', 'PriorDefault', 'Employed', 'CreditScore', 'DriversLicense', 'Citizen', 'ZipCode', 'Income', 'ApprovalStatus'])
 
 # Inspect data
 print(cc_apps.head())
 ```
 
-      0      1      2  3  4  5  6     7  8  9   10 11 12     13   14 15
-    0  b  30.83  0.000  u  g  w  v  1.25  t  t   1  f  g  00202    0  +
-    1  a  58.67  4.460  u  g  q  h  3.04  t  t   6  f  g  00043  560  +
-    2  a  24.50  0.500  u  g  q  h  1.50  t  f   0  f  g  00280  824  +
-    3  b  27.83  1.540  u  g  w  v  3.75  t  t   5  t  g  00100    3  +
-    4  b  20.17  5.625  u  g  w  v  1.71  t  f   0  f  s  00120    0  +
+      Gender    Age   Debt Married BankCustomer EducationLevel Ethnicity  \
+    0      b  30.83  0.000       u            g              w         v   
+    1      a  58.67  4.460       u            g              q         h   
+    2      a  24.50  0.500       u            g              q         h   
+    3      b  27.83  1.540       u            g              w         v   
+    4      b  20.17  5.625       u            g              w         v   
+    
+       YearsEmployed PriorDefault Employed  CreditScore DriversLicense Citizen  \
+    0           1.25            t        t            1              f       g   
+    1           3.04            t        t            6              f       g   
+    2           1.50            t        f            0              f       g   
+    3           3.75            t        t            5              t       g   
+    4           1.71            t        f            0              f       s   
+    
+      ZipCode  Income ApprovalStatus  
+    0   00202       0              +  
+    1   00043     560              +  
+    2   00280     824              +  
+    3   00100       3              +  
+    4   00120       0              +  
     
 
 ## 2. Inspecting the applications
@@ -54,59 +69,97 @@ print("\n")
 print(cc_apps.tail(17))
 ```
 
-                   2           7          10             14
-    count  690.000000  690.000000  690.00000     690.000000
-    mean     4.758725    2.223406    2.40000    1017.385507
-    std      4.978163    3.346513    4.86294    5210.102598
-    min      0.000000    0.000000    0.00000       0.000000
-    25%      1.000000    0.165000    0.00000       0.000000
-    50%      2.750000    1.000000    0.00000       5.000000
-    75%      7.207500    2.625000    3.00000     395.500000
-    max     28.000000   28.500000   67.00000  100000.000000
+                 Debt  YearsEmployed  CreditScore         Income
+    count  690.000000     690.000000    690.00000     690.000000
+    mean     4.758725       2.223406      2.40000    1017.385507
+    std      4.978163       3.346513      4.86294    5210.102598
+    min      0.000000       0.000000      0.00000       0.000000
+    25%      1.000000       0.165000      0.00000       0.000000
+    50%      2.750000       1.000000      0.00000       5.000000
+    75%      7.207500       2.625000      3.00000     395.500000
+    max     28.000000      28.500000     67.00000  100000.000000
     
     
     <class 'pandas.core.frame.DataFrame'>
     RangeIndex: 690 entries, 0 to 689
     Data columns (total 16 columns):
-    0     690 non-null object
-    1     690 non-null object
-    2     690 non-null float64
-    3     690 non-null object
-    4     690 non-null object
-    5     690 non-null object
-    6     690 non-null object
-    7     690 non-null float64
-    8     690 non-null object
-    9     690 non-null object
-    10    690 non-null int64
-    11    690 non-null object
-    12    690 non-null object
-    13    690 non-null object
-    14    690 non-null int64
-    15    690 non-null object
+    Gender            690 non-null object
+    Age               690 non-null object
+    Debt              690 non-null float64
+    Married           690 non-null object
+    BankCustomer      690 non-null object
+    EducationLevel    690 non-null object
+    Ethnicity         690 non-null object
+    YearsEmployed     690 non-null float64
+    PriorDefault      690 non-null object
+    Employed          690 non-null object
+    CreditScore       690 non-null int64
+    DriversLicense    690 non-null object
+    Citizen           690 non-null object
+    ZipCode           690 non-null object
+    Income            690 non-null int64
+    ApprovalStatus    690 non-null object
     dtypes: float64(2), int64(2), object(12)
     memory usage: 86.3+ KB
     None
     
     
-        0      1       2  3  4   5   6      7  8  9   10 11 12     13   14 15
-    673  ?  29.50   2.000  y  p   e   h  2.000  f  f   0  f  g  00256   17  -
-    674  a  37.33   2.500  u  g   i   h  0.210  f  f   0  f  g  00260  246  -
-    675  a  41.58   1.040  u  g  aa   v  0.665  f  f   0  f  g  00240  237  -
-    676  a  30.58  10.665  u  g   q   h  0.085  f  t  12  t  g  00129    3  -
-    677  b  19.42   7.250  u  g   m   v  0.040  f  t   1  f  g  00100    1  -
-    678  a  17.92  10.210  u  g  ff  ff  0.000  f  f   0  f  g  00000   50  -
-    679  a  20.08   1.250  u  g   c   v  0.000  f  f   0  f  g  00000    0  -
-    680  b  19.50   0.290  u  g   k   v  0.290  f  f   0  f  g  00280  364  -
-    681  b  27.83   1.000  y  p   d   h  3.000  f  f   0  f  g  00176  537  -
-    682  b  17.08   3.290  u  g   i   v  0.335  f  f   0  t  g  00140    2  -
-    683  b  36.42   0.750  y  p   d   v  0.585  f  f   0  f  g  00240    3  -
-    684  b  40.58   3.290  u  g   m   v  3.500  f  f   0  t  s  00400    0  -
-    685  b  21.08  10.085  y  p   e   h  1.250  f  f   0  f  g  00260    0  -
-    686  a  22.67   0.750  u  g   c   v  2.000  f  t   2  t  g  00200  394  -
-    687  a  25.25  13.500  y  p  ff  ff  2.000  f  t   1  t  g  00200    1  -
-    688  b  17.92   0.205  u  g  aa   v  0.040  f  f   0  f  g  00280  750  -
-    689  b  35.00   3.375  u  g   c   h  8.290  f  f   0  t  g  00000    0  -
+        Gender    Age    Debt Married BankCustomer EducationLevel Ethnicity  \
+    673      ?  29.50   2.000       y            p              e         h   
+    674      a  37.33   2.500       u            g              i         h   
+    675      a  41.58   1.040       u            g             aa         v   
+    676      a  30.58  10.665       u            g              q         h   
+    677      b  19.42   7.250       u            g              m         v   
+    678      a  17.92  10.210       u            g             ff        ff   
+    679      a  20.08   1.250       u            g              c         v   
+    680      b  19.50   0.290       u            g              k         v   
+    681      b  27.83   1.000       y            p              d         h   
+    682      b  17.08   3.290       u            g              i         v   
+    683      b  36.42   0.750       y            p              d         v   
+    684      b  40.58   3.290       u            g              m         v   
+    685      b  21.08  10.085       y            p              e         h   
+    686      a  22.67   0.750       u            g              c         v   
+    687      a  25.25  13.500       y            p             ff        ff   
+    688      b  17.92   0.205       u            g             aa         v   
+    689      b  35.00   3.375       u            g              c         h   
+    
+         YearsEmployed PriorDefault Employed  CreditScore DriversLicense Citizen  \
+    673          2.000            f        f            0              f       g   
+    674          0.210            f        f            0              f       g   
+    675          0.665            f        f            0              f       g   
+    676          0.085            f        t           12              t       g   
+    677          0.040            f        t            1              f       g   
+    678          0.000            f        f            0              f       g   
+    679          0.000            f        f            0              f       g   
+    680          0.290            f        f            0              f       g   
+    681          3.000            f        f            0              f       g   
+    682          0.335            f        f            0              t       g   
+    683          0.585            f        f            0              f       g   
+    684          3.500            f        f            0              t       s   
+    685          1.250            f        f            0              f       g   
+    686          2.000            f        t            2              t       g   
+    687          2.000            f        t            1              t       g   
+    688          0.040            f        f            0              f       g   
+    689          8.290            f        f            0              t       g   
+    
+        ZipCode  Income ApprovalStatus  
+    673   00256      17              -  
+    674   00260     246              -  
+    675   00240     237              -  
+    676   00129       3              -  
+    677   00100       1              -  
+    678   00000      50              -  
+    679   00000       0              -  
+    680   00280     364              -  
+    681   00176     537              -  
+    682   00140       2              -  
+    683   00240       3              -  
+    684   00400       0              -  
+    685   00260       0              -  
+    686   00200     394              -  
+    687   00200       1              -  
+    688   00280     750              -  
+    689   00000       0              -  
     
 
 ## 3. Handling the missing values (part i)
@@ -133,24 +186,62 @@ cc_apps = cc_apps.replace(to_replace = '?', value = np.nan)
 print(cc_apps.tail(17))
 ```
 
-          0      1       2  3  4   5   6      7  8  9   10 11 12     13   14 15
-    673  NaN  29.50   2.000  y  p   e   h  2.000  f  f   0  f  g  00256   17  -
-    674    a  37.33   2.500  u  g   i   h  0.210  f  f   0  f  g  00260  246  -
-    675    a  41.58   1.040  u  g  aa   v  0.665  f  f   0  f  g  00240  237  -
-    676    a  30.58  10.665  u  g   q   h  0.085  f  t  12  t  g  00129    3  -
-    677    b  19.42   7.250  u  g   m   v  0.040  f  t   1  f  g  00100    1  -
-    678    a  17.92  10.210  u  g  ff  ff  0.000  f  f   0  f  g  00000   50  -
-    679    a  20.08   1.250  u  g   c   v  0.000  f  f   0  f  g  00000    0  -
-    680    b  19.50   0.290  u  g   k   v  0.290  f  f   0  f  g  00280  364  -
-    681    b  27.83   1.000  y  p   d   h  3.000  f  f   0  f  g  00176  537  -
-    682    b  17.08   3.290  u  g   i   v  0.335  f  f   0  t  g  00140    2  -
-    683    b  36.42   0.750  y  p   d   v  0.585  f  f   0  f  g  00240    3  -
-    684    b  40.58   3.290  u  g   m   v  3.500  f  f   0  t  s  00400    0  -
-    685    b  21.08  10.085  y  p   e   h  1.250  f  f   0  f  g  00260    0  -
-    686    a  22.67   0.750  u  g   c   v  2.000  f  t   2  t  g  00200  394  -
-    687    a  25.25  13.500  y  p  ff  ff  2.000  f  t   1  t  g  00200    1  -
-    688    b  17.92   0.205  u  g  aa   v  0.040  f  f   0  f  g  00280  750  -
-    689    b  35.00   3.375  u  g   c   h  8.290  f  f   0  t  g  00000    0  -
+        Gender    Age    Debt Married BankCustomer EducationLevel Ethnicity  \
+    673    NaN  29.50   2.000       y            p              e         h   
+    674      a  37.33   2.500       u            g              i         h   
+    675      a  41.58   1.040       u            g             aa         v   
+    676      a  30.58  10.665       u            g              q         h   
+    677      b  19.42   7.250       u            g              m         v   
+    678      a  17.92  10.210       u            g             ff        ff   
+    679      a  20.08   1.250       u            g              c         v   
+    680      b  19.50   0.290       u            g              k         v   
+    681      b  27.83   1.000       y            p              d         h   
+    682      b  17.08   3.290       u            g              i         v   
+    683      b  36.42   0.750       y            p              d         v   
+    684      b  40.58   3.290       u            g              m         v   
+    685      b  21.08  10.085       y            p              e         h   
+    686      a  22.67   0.750       u            g              c         v   
+    687      a  25.25  13.500       y            p             ff        ff   
+    688      b  17.92   0.205       u            g             aa         v   
+    689      b  35.00   3.375       u            g              c         h   
+    
+         YearsEmployed PriorDefault Employed  CreditScore DriversLicense Citizen  \
+    673          2.000            f        f            0              f       g   
+    674          0.210            f        f            0              f       g   
+    675          0.665            f        f            0              f       g   
+    676          0.085            f        t           12              t       g   
+    677          0.040            f        t            1              f       g   
+    678          0.000            f        f            0              f       g   
+    679          0.000            f        f            0              f       g   
+    680          0.290            f        f            0              f       g   
+    681          3.000            f        f            0              f       g   
+    682          0.335            f        f            0              t       g   
+    683          0.585            f        f            0              f       g   
+    684          3.500            f        f            0              t       s   
+    685          1.250            f        f            0              f       g   
+    686          2.000            f        t            2              t       g   
+    687          2.000            f        t            1              t       g   
+    688          0.040            f        f            0              f       g   
+    689          8.290            f        f            0              t       g   
+    
+        ZipCode  Income ApprovalStatus  
+    673   00256      17              -  
+    674   00260     246              -  
+    675   00240     237              -  
+    676   00129       3              -  
+    677   00100       1              -  
+    678   00000      50              -  
+    679   00000       0              -  
+    680   00280     364              -  
+    681   00176     537              -  
+    682   00140       2              -  
+    683   00240       3              -  
+    684   00400       0              -  
+    685   00260       0              -  
+    686   00200     394              -  
+    687   00200       1              -  
+    688   00280     750              -  
+    689   00000       0              -  
     
 
 ## 4. Handling the missing values (part ii)
@@ -162,33 +253,27 @@ print(cc_apps.tail(17))
 ```python
 # Impute the missing values with mean imputation
 cols = [2, 7, 10, 14]
-cc_apps[cols].fillna(cc_apps.mean(axis = 1), inplace=True)
+for i in cols:
+    cc_apps.iloc[:, i].fillna(cc_apps.mean(axis = 1), inplace=True)
 
 # Count the number of NaNs in the dataset to verify
-for c in cols :
-    print(c, ": \n", cc_apps[c].isnull().value_counts())
+for i in cols :
+    print(i, ": \n", cc_apps.iloc[:, i].isnull().value_counts())
 
 ```
 
     2 : 
      False    690
-    Name: 2, dtype: int64
+    Name: Debt, dtype: int64
     7 : 
      False    690
-    Name: 7, dtype: int64
+    Name: YearsEmployed, dtype: int64
     10 : 
      False    690
-    Name: 10, dtype: int64
+    Name: CreditScore, dtype: int64
     14 : 
      False    690
-    Name: 14, dtype: int64
-    
-
-    C:\Users\cuican2\anaconda3\lib\site-packages\pandas\core\generic.py:3660: SettingWithCopyWarning: 
-    A value is trying to be set on a copy of a slice from a DataFrame
-    
-    See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-      self._update_inplace(new_data)
+    Name: Income, dtype: int64
     
 
 ## 5. Handling the missing values (part iii)
@@ -211,37 +296,37 @@ for col in cc_apps.columns:
 ```
 
     False    690
-    Name: 0, dtype: int64
+    Name: Gender, dtype: int64
     False    690
-    Name: 1, dtype: int64
+    Name: Age, dtype: int64
     False    690
-    Name: 2, dtype: int64
+    Name: Debt, dtype: int64
     False    690
-    Name: 3, dtype: int64
+    Name: Married, dtype: int64
     False    690
-    Name: 4, dtype: int64
+    Name: BankCustomer, dtype: int64
     False    690
-    Name: 5, dtype: int64
+    Name: EducationLevel, dtype: int64
     False    690
-    Name: 6, dtype: int64
+    Name: Ethnicity, dtype: int64
     False    690
-    Name: 7, dtype: int64
+    Name: YearsEmployed, dtype: int64
     False    690
-    Name: 8, dtype: int64
+    Name: PriorDefault, dtype: int64
     False    690
-    Name: 9, dtype: int64
+    Name: Employed, dtype: int64
     False    690
-    Name: 10, dtype: int64
+    Name: CreditScore, dtype: int64
     False    690
-    Name: 11, dtype: int64
+    Name: DriversLicense, dtype: int64
     False    690
-    Name: 12, dtype: int64
+    Name: Citizen, dtype: int64
     False    690
-    Name: 13, dtype: int64
+    Name: ZipCode, dtype: int64
     False    690
-    Name: 14, dtype: int64
+    Name: Income, dtype: int64
     False    690
-    Name: 15, dtype: int64
+    Name: ApprovalStatus, dtype: int64
     
 
 ## 6. Preprocessing the data (part i)
@@ -282,7 +367,7 @@ for col in cc_apps.columns:
 from sklearn.preprocessing import MinMaxScaler
 
 # Drop features 10 and 13 and convert the DataFrame to a NumPy array
-cc_apps = cc_apps.drop([10, 13], axis=1)
+cc_apps = cc_apps.drop(['DriversLicense', 'ZipCode'], axis=1)
 cc_apps = cc_apps.values
 
 # Segregate features and labels into separate variables
@@ -355,9 +440,9 @@ print("Accuracy of logistic regression classifier: ", logreg.score(X_test, y_tes
 print(confusion_matrix(y_test, y_pred))
 ```
 
-    Accuracy of logistic regression classifier:  0.833333333333
+    Accuracy of logistic regression classifier:  0.837719298246
     [[92 11]
-     [27 98]]
+     [26 99]]
     
 
 ## 11. Grid searching and making the model perform better
@@ -402,7 +487,7 @@ best_score, best_params = grid_model_result.best_score_, grid_model_result.best_
 print("Best: %f using %s" % (best_score, best_params))
 ```
 
-    Best: 0.853623 using {'max_iter': 100, 'tol': 0.01}
+    Best: 0.852174 using {'max_iter': 100, 'tol': 0.01}
     
 
 
