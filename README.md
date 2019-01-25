@@ -12,3 +12,4 @@
 ### [The Hottest Topics in Machine Learning](https://www.datacamp.com/projects/158)
 ### [Reducing Traffic Mortality in the USA](https://www.datacamp.com/projects/462)
 ### [ASL Recognition with Deep Learning](https://www.datacamp.com/projects/509)
+### [Predicting Credit Card Approvals](https://www.datacamp.com/projects/558)
