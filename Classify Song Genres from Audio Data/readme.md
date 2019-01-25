@@ -1,7 +1,7 @@
 
 ## 1. Preparing our dataset
 <p><em>These recommendations are so on point! How does this playlist know me so well?</em></p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_449/img/iphone_music.jpg" alt="Project Image Record" width="600px"></p>
+
 <p>Over the past few years, streaming services with huge catalogs have become the primary means through which most people listen to their favorite music. But at the same time, the sheer amount of music on offer can mean users might be a bit overwhelmed when trying to look for newer music that suits their tastes.</p>
 <p>For this reason, streaming services have looked into means of categorizing music to allow for personalized recommendations. One method involves direct analysis of the raw audio information in a given song, scoring the raw data on a variety of metrics. Today, we'll be examining data compiled by a research group known as The Echo Nest. Our goal is to look through this dataset and classify songs as being either 'Hip-Hop' or 'Rock' - all without listening to a single one ourselves. In doing so, we will learn how to clean our data, do some exploratory data visualization, and use feature reduction towards the goal of feeding our data through some simple machine learning algorithms, such as decision trees and logistic regression.</p>
 <p>To begin with, let's load the metadata about our tracks alongside the track metrics compiled by The Echo Nest. A song is about more than its title, artist, and number of listens. We have another dataset that has musical features of each track such as <code>danceability</code> and <code>acousticness</code> on a scale from -1 to 1. These exist in two different files, which are in different formats - CSV and JSON. While CSV is a popular file format for denoting tabular data, JSON is another common file format in which databases often return the results of a given query.</p>
@@ -23,7 +23,7 @@ echo_tracks = echonest_metrics.merge(tracks[['track_id', 'genre_top']], on = 'tr
 
 # Inspect the resultant dataframe
 echo_tracks.info()
-echo_tracks['genre_top']
+#echo_tracks['genre_top']
 ```
 
     <class 'pandas.core.frame.DataFrame'>
@@ -44,73 +44,6 @@ echo_tracks['genre_top']
 
 
 
-
-
-    0       Hip-Hop
-    1       Hip-Hop
-    2          Rock
-    3          Rock
-    4          Rock
-    5          Rock
-    6          Rock
-    7          Rock
-    8          Rock
-    9          Rock
-    10         Rock
-    11         Rock
-    12         Rock
-    13         Rock
-    14         Rock
-    15         Rock
-    16         Rock
-    17         Rock
-    18         Rock
-    19         Rock
-    20         Rock
-    21         Rock
-    22      Hip-Hop
-    23         Rock
-    24         Rock
-    25         Rock
-    26         Rock
-    27         Rock
-    28         Rock
-    29         Rock
-             ...   
-    4772       Rock
-    4773       Rock
-    4774       Rock
-    4775       Rock
-    4776       Rock
-    4777       Rock
-    4778       Rock
-    4779       Rock
-    4780       Rock
-    4781       Rock
-    4782       Rock
-    4783       Rock
-    4784       Rock
-    4785       Rock
-    4786       Rock
-    4787       Rock
-    4788       Rock
-    4789       Rock
-    4790       Rock
-    4791       Rock
-    4792       Rock
-    4793       Rock
-    4794       Rock
-    4795       Rock
-    4796       Rock
-    4797       Rock
-    4798       Rock
-    4799       Rock
-    4800       Rock
-    4801       Rock
-    Name: genre_top, Length: 4802, dtype: object
-
-
-
 ## 2. Pairwise relationships between continuous variables
 <p>We typically want to avoid using variables that have strong correlations with each other -- hence avoiding feature redundancy -- for a few reasons:</p>
 <ul>
@@ -126,173 +59,6 @@ corr_metrics = echo_tracks.corr()
 corr_metrics.style.background_gradient()
 ```
 
-
-
-
-<style  type="text/css" >
-    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col0 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col1 {
-            background-color:  #e0dded;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col2 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col3 {
-            background-color:  #97b7d7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col4 {
-            background-color:  #f3edf5;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col5 {
-            background-color:  #b8c6e0;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col6 {
-            background-color:  #e1dfed;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col7 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row0_col8 {
-            background-color:  #e2dfee;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col0 {
-            background-color:  #d0d1e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col1 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col2 {
-            background-color:  #fbf3f9;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col3 {
-            background-color:  #f3edf5;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col4 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col5 {
-            background-color:  #80aed2;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col6 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col7 {
-            background-color:  #bdc8e1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row1_col8 {
-            background-color:  #529bc7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col0 {
-            background-color:  #f5eff6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col1 {
-            background-color:  #fef6fa;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col2 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col3 {
-            background-color:  #c4cbe3;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col4 {
-            background-color:  #dcdaeb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col5 {
-            background-color:  #dedcec;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col6 {
-            background-color:  #adc1dd;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col7 {
-            background-color:  #a7bddb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row2_col8 {
-            background-color:  #d9d8ea;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col0 {
-            background-color:  #97b7d7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col1 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col2 {
-            background-color:  #d2d3e7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col3 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col4 {
-            background-color:  #fdf5fa;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col5 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col6 {
-            background-color:  #d9d8ea;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col7 {
-            background-color:  #f4eef6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row3_col8 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col0 {
-            background-color:  #ced0e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col1 {
-            background-color:  #ede8f3;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col2 {
-            background-color:  #bdc8e1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col3 {
-            background-color:  #dbdaeb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col4 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col5 {
-            background-color:  #c0c9e2;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col6 {
-            background-color:  #dcdaeb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col7 {
-            background-color:  #bdc8e1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row4_col8 {
-            background-color:  #e8e4f0;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col0 {
-            background-color:  #b8c6e0;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col1 {
-            background-color:  #93b5d6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col2 {
-            background-color:  #eae6f1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col3 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col4 {
-            background-color:  #eae6f1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col5 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col6 {
-            background-color:  #dbdaeb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col7 {
-            background-color:  #d0d1e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row5_col8 {
-            background-color:  #bfc9e1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col0 {
-            background-color:  #d0d1e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col1 {
-            background-color:  #fef6fa;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col2 {
-            background-color:  #a7bddb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col3 {
-            background-color:  #c5cce3;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col4 {
-            background-color:  #f0eaf4;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col5 {
-            background-color:  #c8cde4;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col6 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col7 {
-            background-color:  #d0d1e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row6_col8 {
-            background-color:  #d6d6e9;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col0 {
-            background-color:  #fff7fb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col1 {
-            background-color:  #d2d2e7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col2 {
-            background-color:  #b5c4df;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col3 {
-            background-color:  #f5eef6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col4 {
-            background-color:  #e9e5f1;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col5 {
-            background-color:  #d1d2e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col6 {
-            background-color:  #e1dfed;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col7 {
-            background-color:  #023858;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row7_col8 {
-            background-color:  #dedcec;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col0 {
-            background-color:  #cdd0e5;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col1 {
-            background-color:  #4c99c5;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col2 {
-            background-color:  #d1d2e6;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col3 {
-            background-color:  #efe9f3;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col4 {
-            background-color:  #f7f0f7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col5 {
-            background-color:  #a5bddb;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col6 {
-            background-color:  #d3d4e7;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col7 {
-            background-color:  #c6cce3;
-        }    #T_fe52551a_1dcd_11e9_a833_0242ac110014row8_col8 {
-            background-color:  #023858;
-        }</style>  
 <table id="T_fe52551a_1dcd_11e9_a833_0242ac110014" > 
 <thead>    <tr> 
         <th class="blank level0" ></th> 
@@ -505,8 +271,6 @@ print(pca_projection.shape)
 ## 6. Train a decision tree to classify genre
 <p>Now we can use the lower dimensional PCA projection of the data to classify songs into genres. To do that, we first need to split our dataset into 'train' and 'test' subsets, where the 'train' subset will be used to train our model while the 'test' dataset allows for model performance validation.</p>
 <p>Here, we will be using a simple algorithm known as a decision tree. Decision trees are rule-based classifiers that take in features and follow a 'tree structure' of binary decisions to ultimately classify a data point into one of two or more categories. In addition to being easy to both use and interpret, decision trees allow us to visualize the 'logic flowchart' that the model generates from the training data.</p>
-<p>Here is an example of a decision tree that demonstrates the process by which an input image (in this case, of a shape) might be classified based on the number of sides it has and whether it is rotated.</p>
-<p><img src="https://s3.amazonaws.com/assets.datacamp.com/production/project_449/img/simple_decision_tree.png" alt="Decision Tree Flow Chart Example" width="350px"></p>
 
 
 ```python
