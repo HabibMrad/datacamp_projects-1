@@ -206,55 +206,11 @@ cor = pd.DataFrame.from_records(measures)
 cor.T.corr()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.000000</td>
-      <td>0.793372</td>
-      <td>0.971493</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0.793372</td>
-      <td>1.000000</td>
-      <td>0.833816</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.971493</td>
-      <td>0.833816</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| |0|1|2|
+|-|-|-|-|
+|0|1.000000|0.793372|0.971493|
+|1|0.793372|1.000000|0.833816|
+|2|0.971493|0.833816|1.000000|
 
 
 ## 9. Conclusion
