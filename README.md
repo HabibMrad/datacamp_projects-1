@@ -1,5 +1,5 @@
 ## DataCamp Projects
-This repo includes all the projects I've completed on DataCamp.
+This repository includes all the projects I've completed on DataCamp.
 The code and results for each project could be found in the corresponding folder.
 
 #### Original Links:
