@@ -16,3 +16,4 @@ The code and results for each project could be found in the corresponding folder
 - [Reducing Traffic Mortality in the USA](https://github.com/casey0808/datacamp_projects/tree/master/Reducing%20Traffic%20Mortality%20in%20the%20USA)
 - [ASL Recognition with Deep Learning](https://github.com/casey0808/datacamp_projects/tree/master/ASL%20Recognition%20with%20Deep%20Learning)
 - [Predicting Credit Card Approvals](https://github.com/casey0808/datacamp_projects/tree/master/Predicting%20Credit%20Card%20Approvals)
+- [Word Frequency in Moby Dick](https://github.com/casey0808/datacamp_projects/tree/master/Word_Frequency_in_Moby_Dick)
