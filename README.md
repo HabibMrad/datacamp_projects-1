@@ -17,3 +17,4 @@ The code and results for each project could be found in the corresponding folder
 - [ASL Recognition with Deep Learning](https://github.com/casey0808/datacamp_projects/tree/master/ASL%20Recognition%20with%20Deep%20Learning)
 - [Predicting Credit Card Approvals](https://github.com/casey0808/datacamp_projects/tree/master/Predicting%20Credit%20Card%20Approvals)
 - [Word Frequency in Moby Dick](https://github.com/casey0808/datacamp_projects/tree/master/Word_Frequency_in_Moby_Dick)
+- [A Visual History of Nobel Prize Winners](https://github.com/casey0808/datacamp_projects/tree/master/A_Visual_History_of_Nobel_Prize_Winners)
